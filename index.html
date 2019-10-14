@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录系统</title>
+</head>
+<link rel="stylesheet" href="style/css.css">
+<script src="javascript/js.js"></script>
+<body>
+
+<div>
+    <form action="succeed.html">
+    <legend>【新用户注册】</legend>
+    <p><label for="name">用户名：</label>
+        <input type="text" id="name"><label id="cname">*不能为空</label>
+    </p>
+    <p><label for="password">密码：</label>
+        <input type="password" id="password"><label id="cpassword">*不能为空且必须一致</label>
+    </p>
+    <p><label for="R_password">确认密码：</label>
+        <input type="text" id="R_password"><label id="crepass">*不能为空且必须一致</label>
+    </p>
+    <p><label for="email">E-mail：</label>
+        <input type="text" id="email"><label id="cemail">*格式不正确</label>
+    </p>
+    <p>
+        <input type="submit" value="注册" class="btn">
+    </p>
+    </form>
+</div>
+</body>
+
+<script>
+    function hasClass(obj,cls) {
+        return obj.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+    }
+    function addClass(obj,cls) {
+        if(!this.hasClass(obj,cls)){
+            obj.className+=" "+cls;
+        }
+    }
+    function removeClass(obj,cls) {
+        if(hasClass(obj,cls)){
+            var reg=new RegExp('(\\s|^)'+cls+'(\\s|$)');
+            obj.className=obj.className.replace(reg," ");
+        }
+    }
+    function checkName(name) {      //验证name
+        if(name!=""){      //不为空则正确。当然也可以用ajex异步获取
+            removeClass(ele.name,"borderRed");      //移除类
+            document.getElementById('cname').innerHTML='*正确';
+            document.getElementById("cname").style.display="inline";
+            return true;
+        }else{  //name 不符合
+            addClass(ele.name,"borderRed"); //添加类
+            document.getElementById("cname").style.display="inline";
+            return false;
+        }
+    }
+    function checkPassw(passw1,passw2) {
+        if(passw1==""||passw2==""||passw1!==passw2){
+            addClass(ele.password,"borderRed");
+            addClass(ele.R_password,"borderRed");
+            document.getElementById("crepass").style.display="inline";
+            return false;
+        }else{
+            removeClass(ele.password,"borderRed");
+            removeClass(ele.R_password,"borderRed");
+            document.getElementById('cpassword').innerHTML='*正确';
+            document.getElementById("cpassword").style.display="inline";
+            document.getElementById('crepass').innerHTML='*正确';
+            document.getElementById("crepass").style.display="inline";
+            return true;
+        }
+    }
+
+
+    function  checkEmail(email) {
+        var pattern=/^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+        if(!pattern.test(email)){
+            addClass(ele.email,"borderRed");
+            document.getElementById("cemail").style.display="inline";
+            ele.email.select();
+            return false;
+        }else {
+            removeClass(ele.email,"borderRed");
+            document.getElementById('cemail').innerHTML='*正确';
+            document.getElementById("cemail").style.display="inline";
+            return true;
+        }
+    }
+
+    var ele={
+        name:document.getElementById("name"),
+        password:document.getElementById("password"),
+        R_password:document.getElementById("R_password"),
+        email:document.getElementById("email")
+    };
+    ele.name.onblur=function () {
+        checkName(ele.name.value);
+    }
+
+    ele.password.onblur=function () {
+        checkPassw(ele.password.valueOf, ele.R_password.value);
+    }
+    ele.R_password.onblur=function () {
+        checkPassw(ele.password.valueOf, ele.R_password.value);
+    }
+    ele.email.onblur=function () {
+        checkEmail(ele.email.value);
+    }
+
+    function check() {
+        var ok = false;
+        var nameOk=false;
+        var emailOk=false;
+        var passwOk=false;
+
+        if(checkName(ele.name.value)){
+            nameOk=true;
+        }
+        if(checkPassw(ele.password.value,ele.R_password.value)){
+            passwOk=true;
+        }
+        if(checkEmail(ele.email.value)){
+            emailOk=true;
+        }
+        if(nameOk&&passwOk&&emailOk){
+            alert("注册成功")
+        }
+        return false;
+    }
+</script>
+
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+    }
+
+    .login{
+        position: relative;
+        margin: 100px auto;
+        padding: 50px 20px;
+        width: 550px;
+        height: 200px;
+        border: 1px solid #333333;
+    }
+    .login legend{
+        font-weight: bold;
+        color: green;
+        text-align: center;
+    }
+    .login label{
+        display: inline-block;
+        width: 130px;
+        text-align: center;
+    }
+    .btn{
+        height: 30px;
+        width: 100px;
+        padding: 5px;
+        border: 0;
+        background-color:#0dd ;
+        font-weight: bold;
+        cursor: pointer;
+        float: right;
+    }
+    input{
+        height: 20px;
+        width: 170px;
+    }
+    .borderRed{
+        border: 2px solid red;
+    }
+    #cname,#cpassword,#crepass,#cemail{
+        display: none;
+        color: #ff0000;
+    }
+</style>
+</html>
